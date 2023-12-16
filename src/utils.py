@@ -10,6 +10,7 @@ def get_data_from_file(path):
 
 
 def get_filtered_transactions(data_file):
+    """Фильтрация операций по статусу 'Выполнено'"""
     file_executed_state = []
     for transaction in data_file:
         if transaction.get('state') == "EXECUTED":
@@ -18,6 +19,7 @@ def get_filtered_transactions(data_file):
 
 
 def get_sorted_transactions(file_executed_state):
+    """Сортировка операций по дате убывания"""
     sorted_data_file = sorted(file_executed_state, key=lambda x: x['date'], reverse=True)
     last_five_operations = sorted_data_file[:5]
     return last_five_operations
@@ -52,3 +54,14 @@ def hide_bank_account(card_account):
 def get_display_of_amount_and_currency(size_of_operation):
     """Получает отображение суммы операции и денежной единицы"""
     return f"{size_of_operation['amount']} {size_of_operation['currency']['name']}"
+
+
+def print_the_result(data_from_file):
+    """Выводит операции в необходимом формате"""
+    list_result = []
+    for item in data_from_file:
+        result = f"\n{change_format_date(item.get('date'))} {item.get('description')}" \
+               f"\n{hide_bank_account(item.get('from'))} {'->'} {hide_bank_account(item.get('to'))}"\
+               f"\n{get_display_of_amount_and_currency(item.get('operationAmount'))}"
+        list_result.append(result)
+    return "\n".join(list_result)
