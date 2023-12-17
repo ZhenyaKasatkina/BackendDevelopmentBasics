@@ -1,8 +1,7 @@
 import os.path
-from config import ROOT_DIR
-
 import pytest
 
+from config import ROOT_DIR
 from src import utils
 
 
@@ -44,7 +43,7 @@ def coll():  # имя фикстуры любое
 
 def test_get_data_from_file():
     used_file = os.path.join(ROOT_DIR, 'tests', 'test_operations.json')
-    assert utils.get_data_from_file(used_file) == [1, 2, 3]
+    assert utils.get_data_from_file(used_file) == [{"1":  "one", "2":  "two", "3": "three"}, {"account":  "**** 2563", "bank": "GeMany", "client": "unknown"}]
 
 
 def test_get_filtered_transactions(coll):
@@ -63,7 +62,8 @@ def test_get_filtered_transactions(coll):
         "from": "Maestro 1308795367077170",
         "to": "Счет 96527012349577388612"
     }]
-
+    assert utils.get_filtered_transactions([{"id": 615064591,
+            "state": None}, {}]) == []
 
 def test_get_sorted_transactions():
     data = [
